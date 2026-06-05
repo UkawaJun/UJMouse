@@ -15,7 +15,7 @@
 ## 原理
 
 <p align="center">
-  <img src="images/principle.png" width="780" alt="原理示意图">
+  <img src="https://github.com/user-attachments/assets/9c4d3ef3-9d99-454e-9039-4a18bb44acec" width="780" alt="原理示意图">
 </p>
 
 常见的鼠标模拟多用贝塞尔曲线生成轨迹。本项目改用另一种方式:不从零合成,而是复用真人轨迹。
