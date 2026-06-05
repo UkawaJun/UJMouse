@@ -1,4 +1,4 @@
-<img width="1810" height="794" alt="principle" src="https://github.com/user-attachments/assets/02537279-255d-4e60-ac76-47824576c49a" /><p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+<b>English</b> | <a href="README.zh.md">简体中文</a></p>
 
 # UJMouse
 
