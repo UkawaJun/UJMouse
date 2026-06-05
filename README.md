@@ -2,9 +2,11 @@
 
 # UJMouse
 
-A human-like mouse movement library built on **real human trajectories**. Zero training, no deep-learning framework, pure Python.
+> Human-like mouse movement via **random convex combination of real trajectories** · zero training · pure Python · different every time
 
-Each move = pick 3 real trajectories at random → blend with weights → stretch to the target. Different every time, and it keeps the micro-jitter and acceleration of a real human. Simple enough to read once and reproduce.
+Unlike the countless Bézier-curve solutions out there, UJMouse **reuses trajectories actually drawn by humans** — each move blends 3 random real trajectories and stretches them to the target. Because the base is human-drawn, the micro-jitter, acceleration, and end-of-move deceleration are there for free, far more natural than a function-synthesized curve. Simple enough to read once and reproduce.
+
+<sub>📌 This is one module from a set of personal practice projects built between Jul–Nov 2025.</sub>
 
 > ⚠️ Built for automation testing, demos, and lightweight cases where mouse behavior **isn't strictly analyzed**. Does **not** claim to bypass industrial anti-bot systems (reCAPTCHA v3, DataDome, etc.). See [Limitations](#limitations).
 
@@ -21,7 +23,7 @@ Most mouse simulators use **Bézier curves**. The problem: too smooth, too regul
 1. Pick **3** real trajectories at random, each with a random weight (summing to 1);
 2. Weighted sum point-by-point gives a new trajectory, then stretch it by the direction and distance to the target.
 
-Since the source is human-drawn, the micro-jitter, acceleration, and end-of-move deceleration carry over. The repo ships **402** real trajectories (19 points each), all recorded by hand by one person.
+The repo ships **402** real trajectories (19 points each), all recorded by hand by one person.
 
 ## Install
 
