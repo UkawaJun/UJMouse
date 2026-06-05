@@ -1,4 +1,4 @@
-<img width="2083" height="872" alt="traj_bl_to_tr" src="https://github.com/user-attachments/assets/3e87a05c-4e87-4a8d-aa38-d022ba6bf9ef" /><p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+<a href="README.zh.md">简体中文</a></p>
 
 # UJMouse
 
