@@ -14,11 +14,10 @@ This project offers one way to do human-like mouse movement: instead of Bézier 
 
 ## How it works
 
-
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/48e69a9f-98ff-466b-ba27-1a7ecd2c3f13<img width="2083" height="811" alt="traj_br_to_tl" src="https://github.com/user-attachments/assets/48e61168-7035-4d81-b20e-c7f3070f9454" />
-" width="780" alt="Principle diagram">
+  <img src="https://github.com/user-attachments/assets/48e69a9f-98ff-466b-ba27-1a7ecd2c3f13" width="780" alt="bottom-left to top-right">
 </p>
+
 
 Most mouse simulators generate trajectories with Bézier curves. This project uses a different approach: instead of synthesizing from scratch, it reuses real human trajectories.
 
