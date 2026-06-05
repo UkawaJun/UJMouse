@@ -1,5 +1,7 @@
 <p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+
 # UJMouse
+
 > A human-like mouse movement implementation without Bézier curves · zero training · pure Python
 
 This project offers one way to do human-like mouse movement: instead of Bézier curves or other synthesis methods, it reuses pre-recorded real human mouse trajectories. Each move picks 3 real trajectories at random, blends them with weights, and stretches them to the target. The implementation is simple and mainly meant for learning.
