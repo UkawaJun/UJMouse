@@ -1,37 +1,37 @@
+<p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+
 # UJMouse
-A simple, no-Bézier script that fakes human-like mouse movement the easiest, most beginner-friendly way. Just call Move(x, y).
 
+A human-like cursor movement library built on **real human mouse trajectories**. Zero training, no deep-learning framework, runs in pure Python.
 
-基于**真实人类鼠标轨迹**的拟人化光标移动库。零训练、无深度学习框架,纯 Python 即可运行。
+Core idea: randomly blend pre-recorded real human mouse trajectories with weighted averaging, then stretch toward the target, producing a movement path that differs every time and looks close to a real human's. The whole approach is simple and easy to learn — read through it once and you can reproduce the simulated-mouse effect.
 
-核心做法:把预先采集的真人鼠标轨迹随机加权混合,再按目标方向拉伸,生成每次都不同、视觉上接近真人的移动路径。整套思路简单、易学,照着读一遍就能复现仿真鼠标效果。
-
-> ⚠️ 这是一个**轨迹生成 / 视觉拟真**项目,适合自动化测试、教学演示,以及对鼠标行为没有严格分析的轻量场景。它**不声称**能稳定绕过工业级行为风控(reCAPTCHA v3、DataDome 等)。详见[局限性](#局限性)。
+> ⚠️ This is a **trajectory generation / visual realism** project, suited for automation testing, teaching demos, and lightweight scenarios where mouse behavior is not strictly analyzed. It does **not** claim to reliably bypass industrial-grade behavioral anti-bot systems (reCAPTCHA v3, DataDome, etc.). See [Limitations](#limitations).
 
 ---
 
-## 它解决什么问题
+## What problem it solves
 
-常见的鼠标模拟多用**贝塞尔曲线**。贝塞尔的问题不是不像,而是太规整——曲线平滑、缺少真人的微观抖动和不规则加减速,一眼能看出是函数画的。
+Most mouse simulations use **Bézier curves**. The problem with Bézier isn't that it looks unlike a human — it's that it's too regular: smooth curves, lacking the micro-jitter and irregular acceleration/deceleration of a real human, recognizable at a glance as function-generated.
 
-本项目换个思路:**不从零合成,直接复用真人画出来的轨迹。** 仓库附带 402 条真人轨迹样本(每条 19 个采样点),**全部为个人手动录制**。
+This project takes a different route: **don't synthesize from scratch — reuse trajectories actually drawn by humans.** The repo ships 402 real human trajectory samples (19 sampled points each), **all recorded manually by one person**.
 
-## 原理
+## How it works
 
 <p align="center">
-  <img src="images/principle.png" width="820" alt="原理示意图">
+  <img src="images/principle.png" width="820" alt="Principle diagram">
 </p>
 
-每次移动分两步:
+Each move has two steps:
 
-1. 从样本库**随机抽 3 条**真人轨迹,各分配一个随机权重(三者之和为 1);
-2. 对三条轨迹**逐点加权求和**得到一条新轨迹,再按当前起点到目标点的方向和距离拉伸,时间也按同样权重加权。
+1. **Randomly pick 3** real human trajectories from the sample library, each assigned a random weight (the three sum to 1);
+2. **Weighted sum point-by-point** of the three trajectories yields a new trajectory, which is then stretched by the direction and distance from the current start to the target; time is also weighted by the same weights.
 
-因为素材本身就是人画的,混合后微观抖动、加减速不对称、末端减速这些特征被大体保留,所以比纯曲线自然。数学上,混合轨迹落在被抽中的三条真人轨迹张成的**凸包内**——这既是它像的原因,也是它的能力边界(见局限性)。
+Because the source material is human-drawn, the blended result largely preserves micro-jitter, asymmetric acceleration/deceleration, and end-of-move deceleration — so it looks more natural than a pure curve. Mathematically, the blended trajectory lies within the **convex hull** spanned by the three chosen real trajectories — which is both why it looks real and where its capability ends (see Limitations).
 
-## 安装
+## Installation
 
-克隆仓库后,用 `requirements.txt` 一键安装依赖:
+After cloning the repo, install dependencies in one step with `requirements.txt`:
 
 ```bash
 git clone https://github.com/<your-name>/UJMouse.git
@@ -39,130 +39,130 @@ cd UJMouse
 pip install -r requirements.txt
 ```
 
-`requirements.txt` 里只有两个第三方库:`pyautogui`(驱动鼠标)和 `pandas`(仅在首次从 CSV 重建数据时用到)。其余均为 Python 标准库,无需安装。
+`requirements.txt` contains only two third-party libraries: `pyautogui` (drives the mouse) and `pandas` (used only when rebuilding data from CSV for the first time). Everything else is Python standard library and needs no installation.
 
-## 项目文件与数据格式
+## Project files & data format
 
 ```
 UJMouse/
-├── ujmouse.py            # 核心库(UJMouse 类)
-├── requirements.txt      # 依赖
+├── ujmouse.py            # Core library (UJMouse class)
+├── requirements.txt      # Dependencies
 ├── Document/
-│   └── UJ_Infor.json     # 加密的真人轨迹数据(402 条)
-├── mouse_data.csv        # 原始轨迹(可选;数据丢失时用它重建 json)
-└── images/               # README 配图
+│   └── UJ_Infor.json     # Encrypted real-trajectory data (402 entries)
+├── mouse_data.csv        # Raw trajectories (optional; used to rebuild the json if data is lost)
+└── images/               # README figures
 ```
 
-**数据加载逻辑**(代码已实现):初始化时优先读取加密文件 `Document/UJ_Infor.json`;若不存在,则回退到 `mouse_data.csv` 重新构建。数据在内存中用固定密钥解密,不落地明文。
+**Data loading logic** (already implemented): on init it first reads the encrypted file `Document/UJ_Infor.json`; if absent, it falls back to `mouse_data.csv` and rebuilds. Data is decrypted in memory with a fixed key and never written to disk as plaintext.
 
-**数据格式**:解密后是一个字典,字段含义如下:
+**Data format**: after decryption it's a dictionary with the following fields:
 
-| 字段 | 含义 |
+| Field | Meaning |
 |---|---|
-| `size` | 每条轨迹的采样点数(19) |
-| `dataSize` | 轨迹总条数(402) |
-| `data` | 每条轨迹的逐点相对位移序列 |
-| `time` | 每条轨迹的总耗时 |
-| `end` | 每条轨迹的终点坐标 |
+| `size` | Number of sampled points per trajectory (19) |
+| `dataSize` | Total number of trajectories (402) |
+| `data` | Per-point relative-displacement sequence of each trajectory |
+| `time` | Total duration of each trajectory |
+| `end` | End coordinates of each trajectory |
 
-## 自定义数据
+## Custom data
 
-附带数据均为个人录制的真实鼠标路径。如果想换成自己的:用采集脚本录制新轨迹存成 CSV,删除旧的 `UJ_Infor.json` 让程序自动重建;或按上面的密钥解码现有 json、修改后再覆盖。**多采集几个人的数据,多样性和拟真度都会更好。**
+The bundled data is all personally recorded real mouse paths. To replace it with your own: record new trajectories into a CSV with the capture script and delete the old `UJ_Infor.json` to let the program rebuild automatically; or decode the existing json with the key above, modify it, and overwrite. **Recording data from more people improves diversity and realism.**
 
-## 快速使用
+## Quick start
 
 ```python
 from ujmouse import UJMouse
 
 mouse = UJMouse()
-mouse.Move(800, 600)                    # 拟人化移动到 (800, 600)
-mouse.Move(400, 300, need_Click=True)   # 移动并点击
+mouse.Move(800, 600)                    # human-like move to (800, 600)
+mouse.Move(400, 300, need_Click=True)   # move and click
 
-mouse.IterMode = True                   # 开启迭代 / 漫游模式
+mouse.IterMode = True                   # enable iterative / roaming mode
 mouse.Move(1200, 200)
 ```
 
-## UJMouse 类的功能
+## The UJMouse class
 
 ```
 UJMouse
-├── 移动
-│   ├── Move(x, y, need_Click=False)   核心:走拟人轨迹移动到目标,可附带点击
-│   └── Locate(x, y, delta=0.0)        瞬移到目标(不走轨迹)
-├── 拖拽
-│   └── Drag(x1, y1, x2, y2)           按下 → 拟人移动 → 松开
-├── 键盘
-│   └── hotKey(key=[...])              组合键(支持 1~3 个键)
-├── 位置
-│   ├── UpdateMouseLoc()               刷新当前鼠标位置
-│   └── GetMouseLoc(loc)               读取当前鼠标位置
-├── 时间
-│   └── Delta(t=1.5)                   延时
-└── 配置项
-    ├── IterMode                       是否开启迭代/漫游模式(默认 False)
-    └── IterDis                        触发递归填充的距离阈值(默认 100)
+├── Movement
+│   ├── Move(x, y, need_Click=False)   Core: move to target along a human-like trajectory, optional click
+│   └── Locate(x, y, delta=0.0)        Teleport to target (no trajectory)
+├── Drag
+│   └── Drag(x1, y1, x2, y2)           Press → human-like move → release
+├── Keyboard
+│   └── hotKey(key=[...])              Hotkey combo (supports 1–3 keys)
+├── Position
+│   ├── UpdateMouseLoc()               Refresh current mouse position
+│   └── GetMouseLoc(loc)               Read current mouse position
+├── Timing
+│   └── Delta(t=1.5)                   Delay
+└── Config
+    ├── IterMode                       Whether iterative/roaming mode is on (default False)
+    └── IterDis                        Distance threshold that triggers recursive filling (default 100)
 ```
 
-> 以上为对外使用的方法。类内还有若干 `_` 开头的底层封装(点击、滚轮、距离计算、越界保护等),供 `Move` 等方法内部调用。
+> The above are the public methods. The class also has several `_`-prefixed low-level wrappers (click, scroll, distance calc, bounds protection, etc.) called internally by methods like `Move`.
 
-## 效果对比
+## Comparison
 
-### 普通模式
+### Normal mode
 
-普通模式下鼠标沿一条混合轨迹直接走向目标,接近目标时减速收尾。同样起止点各运行 5 次,移动中实时采样真实光标位置;左为贝塞尔,右为本方法:
+In normal mode the cursor moves straight toward the target along one blended trajectory, decelerating to finish near the target. Same start/end run 5 times, with the real cursor position sampled live during movement; left is Bézier, right is this method:
 
 <p align="center">
-  <img src="images/traj_bl_to_tr.png" width="820" alt="左下到右上对比">
+  <img src="images/traj_bl_to_tr.png" width="820" alt="Bottom-left to top-right comparison">
 </p>
 
 <p align="center">
-  <img src="images/traj_br_to_tl.png" width="820" alt="右下到左上对比">
+  <img src="images/traj_br_to_tl.png" width="820" alt="Bottom-right to top-left comparison">
 </p>
 
-贝塞尔(左)平滑得像圆规画的;本方法(右)带有真人数据特有的不规则微抖与加减速。
+Bézier (left) is smooth as if drawn with a compass; this method (right) carries the irregular micro-jitter and acceleration/deceleration characteristic of real human data.
 
-### 迭代 / 漫游模式
+### Iterative / roaming mode
 
-开启 `IterMode` 后,长距离移动会递归填充中间段。填充用的也是真实片段,偶尔抽到波动大的片段会把光标带向较远方向,形成"中途游走、最后回到目标"的效果。仅本方法,左下→右上,3 条:
+With `IterMode` on, long-distance moves recursively fill the middle segments. Since the fill also uses real segments, occasionally picking a high-variance segment pulls the cursor toward a farther direction, producing a "wander midway, then return to target" effect. This method only, bottom-left → top-right, 3 runs:
 
 <p align="center">
-  <img src="images/traj_iter_bl_to_tr.png" width="620" alt="迭代漫游模式">
+  <img src="images/traj_iter_bl_to_tr.png" width="620" alt="Iterative roaming mode">
 </p>
 
-> 这是个有意思的展示性特性,但漫游路径由数据波动驱动,光标可能移向屏幕空白处,在严格行为分析下反而可疑。建议仅作演示。
+> This is an interesting showcase feature, but the roaming path is driven by data variance — the cursor may move toward empty areas of the screen, which is actually suspicious under strict behavioral analysis. Recommended for demo use only.
 
-### 移动耗时随距离变化
+### Move duration vs distance
 
-不同距离下本方法与贝塞尔的耗时对比(各重复多次,误差棒为标准差):
+Duration of this method vs Bézier across distances (repeated multiple times each, error bars are standard deviation):
 
 <p align="center">
-  <img src="images/timing_distance.png" width="680" alt="距离-耗时对比">
+  <img src="images/timing_distance.png" width="680" alt="Distance vs duration comparison">
 </p>
 
-## 与同类项目的关系
+## Related projects
 
-这个方向已被研究得比较透,公开实现不少,各走各的路线。本项目不声称更强,只是路线不同:
+This direction is already fairly well studied, with many public implementations on different routes. This project doesn't claim to be stronger — just a different route:
 
-| 路线 | 方法 | 与本项目的区别 |
+| Route | Method | Difference from this project |
 |---|---|---|
-| ghost-cursor 等 | 贝塞尔曲线 | 纯数学合成,不用真实数据 |
-| sigma-lognormal | 用真实数据拟合数学运动模型 | 抽象成模型参数;本项目直接用原始轨迹 |
-| GAN / 神经网络 | 训练模型学习并生成 | 需要训练;本项目零训练 |
-| HumanMoveMouse 等 | 提取真实数据统计特征 + 插值 | 先抽象成统计量;本项目直接混合原始片段 |
-| **UJMouse** | **多条真实轨迹随机凸组合 + 拉伸 + 可选递归填充** | 直接复用原始片段,简单、零训练 |
+| ghost-cursor, etc. | Bézier curves | Pure math synthesis, no real data |
+| sigma-lognormal | Fit a mathematical motion model to real data | Abstracts into model parameters; this project uses raw trajectories directly |
+| GAN / neural nets | Train a model to learn and generate | Requires training; this project is training-free |
+| HumanMoveMouse, etc. | Extract statistical features from real data + interpolate | Abstracts into statistics first; this project blends raw segments directly |
+| **UJMouse** | **Random convex combination of multiple real trajectories + stretch + optional recursive filling** | Reuses raw segments directly, simple, training-free |
 
-## 局限性
+## Limitations
 
-1. **不保证绕过反爬。** 现代行为风控还看轨迹与页面元素的关系、跨会话一致性等,本项目只处理单次移动的视觉拟真。
-2. **凸组合的边界。** 混合轨迹落在原始数据凸包内,生成不出比样本更极端的移动,多次运行大方向比较一致(对比图可见)。
-3. **样本来自单人采集。** 所有输出带有同一个人的运动风格,多账号 / 大规模场景下可能成为可识别特征。
-4. **漫游模式没有意图。** 中途游走由数据波动驱动,可能移向屏幕空白处,严格分析下反而可疑。
-5. **执行层基于 pyautogui。** 合成事件在某些检测视角下可被识别为非真实输入。
+1. **No guarantee of bypassing anti-bot systems.** Modern behavioral risk control also examines the relationship between the trajectory and page elements, cross-session consistency, and more; this project only handles the visual realism of a single move.
+2. **Convex-combination boundary.** The blended trajectory lies within the convex hull of the source data, so it cannot generate moves more extreme than the samples, and the overall direction across runs is fairly consistent (visible in the comparison figures).
+3. **Samples from a single person.** All output carries one person's motion style, which may become an identifiable feature in multi-account / large-scale scenarios.
+4. **Roaming mode has no intent.** The midway wandering is driven by data variance and may move toward empty screen areas, which is suspicious under strict analysis.
+5. **Execution layer is based on pyautogui.** Synthetic events may be flagged as non-genuine input under some detection viewpoints.
 
-## 许可证
+## License
 
 MIT
 
-## 免责声明
+## Disclaimer
 
-仅供学习、研究和合法的自动化测试使用。请遵守目标网站 / 软件的服务条款及所在地区法律。作者不对滥用行为负责。
+For learning, research, and lawful automation testing only. Please comply with the terms of service of target websites / software and the laws of your region. The author is not responsible for any misuse.
