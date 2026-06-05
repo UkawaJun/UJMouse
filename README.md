@@ -1,4 +1,4 @@
-<p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+<img width="2083" height="872" alt="traj_bl_to_tr" src="https://github.com/user-attachments/assets/3e87a05c-4e87-4a8d-aa38-d022ba6bf9ef" /><p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
 
 # UJMouse
 
@@ -14,8 +14,10 @@ This project offers one way to do human-like mouse movement: instead of Bézier 
 
 ## How it works
 
+
 <p align="center">
-  <img src="images/principle.png" width="780" alt="Principle diagram">
+  <img src="https://github.com/user-attachments/assets/48e69a9f-98ff-466b-ba27-1a7ecd2c3f13<img width="2083" height="811" alt="traj_br_to_tl" src="https://github.com/user-attachments/assets/48e61168-7035-4d81-b20e-c7f3070f9454" />
+" width="780" alt="Principle diagram">
 </p>
 
 Most mouse simulators generate trajectories with Bézier curves. This project uses a different approach: instead of synthesizing from scratch, it reuses real human trajectories.
@@ -53,10 +55,10 @@ mouse.Move(1200, 200)
 **Normal mode** — straight to the target along one blended trajectory, decelerating at the end. Same start/end, 5 runs each, real cursor sampled live during the move (left: Bézier, right: UJMouse):
 
 <p align="center">
-  <img src="images/traj_bl_to_tr.png" width="780" alt="bottom-left to top-right">
+  <img src="https://github.com/user-attachments/assets/33446fb7-3b20-4d1e-8b9f-ada8ecf6ce6b" width="780" alt="bottom-left to top-right">
 </p>
 <p align="center">
-  <img src="images/traj_br_to_tl.png" width="780" alt="bottom-right to top-left">
+  <img src="https://github.com/user-attachments/assets/2e1d3ca3-9c1c-4c5d-8598-1b3ffc8b532f" width="780" alt="bottom-right to top-left">
 </p>
 
 The Bézier trajectories (left) are smooth; this method (right) carries the micro-jitter and acceleration present in the recorded human data.
@@ -64,13 +66,13 @@ The Bézier trajectories (left) are smooth; this method (right) carries the micr
 **Roaming mode** — with `IterMode` on, long moves recursively fill the middle. A high-variance segment now and then pulls the cursor away, giving a "wander, then snap back" effect (UJMouse only, 3 runs):
 
 <p align="center">
-  <img src="images/traj_iter_bl_to_tr.png" width="560" alt="roaming mode">
+  <img src="https://github.com/user-attachments/assets/4499e4bd-e384-4ca3-8b9c-5fa7af3a9d63" width="560" alt="roaming mode">
 </p>
 
 **Duration vs distance** — UJMouse vs Bézier (error bars = std):
 
 <p align="center">
-  <img src="images/timing_distance.png" width="620" alt="distance vs duration">
+  <img src="https://github.com/user-attachments/assets/55fa6c06-a2a1-4375-b6f1-278bf7d51f7d" width="620" alt="distance vs duration">
 </p>
 
 ## File structure
