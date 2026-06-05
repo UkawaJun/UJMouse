@@ -55,25 +55,28 @@ mouse.Move(1200, 200)
 **Normal mode** — straight to the target along one blended trajectory, decelerating at the end. Same start/end, 5 runs each, real cursor sampled live during the move (left: Bézier, right: UJMouse):
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/33446fb7-3b20-4d1e-8b9f-ada8ecf6ce6b" width="780" alt="bottom-left to top-right">
+  <img src="https://github.com/user-attachments/assets/80547cc2-4c54-480d-afe5-2471e531a463" width="780" alt="bottom-left to top-right">
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/2e1d3ca3-9c1c-4c5d-8598-1b3ffc8b532f" width="780" alt="bottom-right to top-left">
+  <img src="https://github.com/user-attachments/assets/6c2f976d-fd39-4401-b892-c4b9f0bf6c12" width="780" alt="bottom-right to top-left">
 </p>
+
 
 The Bézier trajectories (left) are smooth; this method (right) carries the micro-jitter and acceleration present in the recorded human data.
 
 **Roaming mode** — with `IterMode` on, long moves recursively fill the middle. A high-variance segment now and then pulls the cursor away, giving a "wander, then snap back" effect (UJMouse only, 3 runs):
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/4499e4bd-e384-4ca3-8b9c-5fa7af3a9d63" width="560" alt="roaming mode">
+  <img src="https://github.com/user-attachments/assets/313e8b50-91a9-47a5-b052-ca25f3c750e4" width="560" alt="roaming mode">
 </p>
+
 
 **Duration vs distance** — UJMouse vs Bézier (error bars = std):
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/55fa6c06-a2a1-4375-b6f1-278bf7d51f7d" width="620" alt="distance vs duration">
+  <img src="https://github.com/user-attachments/assets/382af3bb-ee07-413c-acaa-876ab4244a19" width="620" alt="distance vs duration">
 </p>
+
 
 ## File structure
 
