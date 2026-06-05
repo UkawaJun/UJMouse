@@ -28,7 +28,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/<your-name>/UJMouse.git
+git clone https://github.com/UkawaJun/UJMouse.git
 cd UJMouse
 pip install -r requirements.txt
 ```
