@@ -1,4 +1,4 @@
-<p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
+<img width="1810" height="794" alt="principle" src="https://github.com/user-attachments/assets/02537279-255d-4e60-ac76-47824576c49a" /><p align="right"><b>English</b> | <a href="README.zh.md">简体中文</a></p>
 
 # UJMouse
 
@@ -15,7 +15,7 @@ This project offers one way to do human-like mouse movement: instead of Bézier 
 ## How it works
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/48e69a9f-98ff-466b-ba27-1a7ecd2c3f13" width="780" alt="bottom-left to top-right">
+  <img src="https://github.com/user-attachments/assets/3aedb01d-93d1-451e-b451-a7a015bec227" width="780" alt="bottom-left to top-right">
 </p>
 
 
