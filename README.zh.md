@@ -53,10 +53,10 @@ mouse.Move(1200, 200)
 **普通模式** — 沿一条混合轨迹直奔目标,末端减速。同样起止点各跑 5 次,移动中实时采样真实光标(左:贝塞尔,右:本方法):
 
 <p align="center">
-  <img src="images/traj_bl_to_tr.png" width="780" alt="左下→右上">
+  <img src="https://github.com/user-attachments/assets/9a83fb5f-0c95-46cd-9918-c56eaa5e12e6" width="780" alt="左下→右上">
 </p>
 <p align="center">
-  <img src="images/traj_br_to_tl.png" width="780" alt="右下→左上">
+  <img src="https://github.com/user-attachments/assets/0cb5bd80-2843-416c-99bc-8243c332aa72" width="780" alt="右下→左上">
 </p>
 
 左侧贝塞尔轨迹平滑;右侧本方法的轨迹带有真人录制数据中的微抖和加减速。
@@ -64,14 +64,16 @@ mouse.Move(1200, 200)
 **迭代/漫游模式** — 开启 `IterMode`,长距离移动会递归填充中间段,偶尔抽到大波动片段就把光标带远,形成"中途游走、最后归位"的效果(仅本方法,3 条):
 
 <p align="center">
-  <img src="images/traj_iter_bl_to_tr.png" width="560" alt="迭代漫游模式">
+  <img src="https://github.com/user-attachments/assets/d1a3478f-15ec-456a-9752-d51575ddc18c" width="560" alt="迭代漫游模式">
 </p>
+
 
 **耗时随距离变化** — 本方法 vs 贝塞尔(误差棒为标准差):
 
 <p align="center">
-  <img src="images/timing_distance.png" width="620" alt="距离-耗时">
+  <img src="https://github.com/user-attachments/assets/d7e316ca-641c-48ca-a362-0420b393a96a" width="620" alt="距离-耗时">
 </p>
+
 
 ## 文件结构
 
