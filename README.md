@@ -2,13 +2,13 @@
 
 # UJMouse
 
-> Human-like mouse movement via **random convex combination of real trajectories** · zero training · pure Python · different every time
+> A human-like mouse movement implementation without Bézier curves · zero training · pure Python
 
-Unlike the countless Bézier-curve solutions out there, UJMouse **reuses trajectories actually drawn by humans** — each move blends 3 random real trajectories and stretches them to the target. Because the base is human-drawn, the micro-jitter, acceleration, and end-of-move deceleration are there for free, far more natural than a function-synthesized curve. Simple enough to read once and reproduce.
+This project offers one way to do human-like mouse movement: instead of Bézier curves or other synthesis methods, it reuses pre-recorded real human mouse trajectories. Each move picks 3 real trajectories at random, blends them with weights, and stretches them to the target. The implementation is simple and mainly meant for learning.
 
 <sub>📌 This is one module from a set of personal practice projects built between Jul–Nov 2025.</sub>
 
-> ⚠️ Built for automation testing, demos, and lightweight cases where mouse behavior **isn't strictly analyzed**. Does **not** claim to bypass industrial anti-bot systems (reCAPTCHA v3, DataDome, etc.). See [Limitations](#limitations).
+> ⚠️ Built for automation testing, demos, and lightweight cases where mouse behavior isn't strictly analyzed. Does not claim to bypass industrial anti-bot systems (reCAPTCHA v3, DataDome, etc.). See [Limitations](#limitations).
 
 ---
 
@@ -18,12 +18,12 @@ Unlike the countless Bézier-curve solutions out there, UJMouse **reuses traject
   <img src="images/principle.png" width="780" alt="Principle diagram">
 </p>
 
-Most mouse simulators use **Bézier curves**. The problem: too smooth, too regular — clearly function-drawn. This project doesn't synthesize from scratch. It **reuses real human trajectories**:
+Most mouse simulators generate trajectories with Bézier curves. This project uses a different approach: instead of synthesizing from scratch, it reuses real human trajectories.
 
-1. Pick **3** real trajectories at random, each with a random weight (summing to 1);
+1. Pick 3 real trajectories at random, each with a random weight (summing to 1);
 2. Weighted sum point-by-point gives a new trajectory, then stretch it by the direction and distance to the target.
 
-The repo ships **402** real trajectories (19 points each), all recorded by hand by one person.
+Because the trajectories come from real recordings, the blended result keeps the micro-jitter and acceleration of real human movement. The repo ships 402 real trajectories (19 points each), all recorded by hand by one person.
 
 ## Install
 
@@ -59,7 +59,7 @@ mouse.Move(1200, 200)
   <img src="images/traj_br_to_tl.png" width="780" alt="bottom-right to top-left">
 </p>
 
-Bézier (left) is smooth like a compass drew it. UJMouse (right) has the irregular jitter and acceleration of real human data.
+The Bézier trajectories (left) are smooth; this method (right) carries the micro-jitter and acceleration present in the recorded human data.
 
 **Roaming mode** — with `IterMode` on, long moves recursively fill the middle. A high-variance segment now and then pulls the cursor away, giving a "wander, then snap back" effect (UJMouse only, 3 runs):
 
